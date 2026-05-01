@@ -14,9 +14,9 @@ WORKDIR /app/teamserver
 RUN go mod download
 RUN go build -ldflags="-s -w" -o havoc-teamserver main.go
 
-# Runtime Stage
+# Runtime Stage - Using Alpine for footprint mínimo
 FROM alpine:latest
-RUN apk add --no-cache python3 py3-pip
+RUN apk add --no-cache python3 py3-pip bash
 
 WORKDIR /app
 COPY --from=builder /app/teamserver/havoc-teamserver .
@@ -25,7 +25,8 @@ COPY --from=builder /app/profiles ./profiles
 
 # RAM Optimization
 ENV GOMEMLIMIT=450MiB
-ENV GOGC=50
+ENV GOGC=40
+ENV MALLOC_ARENA_MAX=1
 
 EXPOSE 40056
 

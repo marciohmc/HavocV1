@@ -43,7 +43,7 @@ const ConfigCard = ({ title, icon: Icon, config, language = 'yaml' }: { title: s
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'config' | 'tips' | 'guide'>('config');
-  const forkUrl = "https://github.com/marciohmc1985/Havoc.git";
+  const forkUrl = "https://github.com/marciohmc/HavocV1.git";
 
   const dockerfile = `
 # Build Stage
@@ -84,12 +84,12 @@ CMD ["./havoc-teamserver", "server", "--profile", "./profiles/havoc.yaotl", "-v"
 
   const renderYaml = `
 /**
- * Render Blueprint para Havoc Framework
+ * Render Blueprint para HavocV1 Framework
  * Otimizado para o plano Free (512MB RAM)
  */
 services:
   - type: web
-    name: havoc-teamserver
+    name: havoc-v1-teamserver
     env: docker
     plan: free
     region: ohio
@@ -102,12 +102,12 @@ services:
       - key: GOMEMLIMIT
         value: 450MiB
     disk:
-      name: havoc-data
+      name: havoc-v1-data
       mountPath: /app/data
       sizeGB: 1
 
 databases:
-  - name: havoc-db
+  - name: havoc-v1-db
     plan: free
     region: ohio
   `.trim();
@@ -137,7 +137,7 @@ Teamserver {
               <Shield size={22} fill="currentColor" />
             </div>
             <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">
-              Havoc Render Config
+              HavocV1 Render Config
             </h1>
           </div>
           <nav className="flex gap-1 p-1 bg-gray-100 rounded-xl">
@@ -172,9 +172,23 @@ Teamserver {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
             >
+              <div className="mb-8 p-6 bg-indigo-50 border border-indigo-100 rounded-2xl flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-1">Repositório: HavocV1</h2>
+                  <p className="text-gray-600 font-mono text-sm">{forkUrl}</p>
+                </div>
+                <a 
+                  href={forkUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-semibold hover:bg-indigo-700 transition-colors flex items-center gap-2"
+                >
+                  Ver no GitHub <ExternalLink size={14} />
+                </a>
+              </div>
               <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Arquivos de Configuração</h2>
-                <p className="text-gray-600">Copie estes arquivos para a raiz do seu repositório Havoc para implantação no Render.</p>
+                <h2 className="text-xl font-bold text-gray-900 mb-2">Arquivos de Configuração</h2>
+                <p className="text-gray-600">Copie estes arquivos para a raiz do seu repositório <strong>HavocV1</strong> para implantação no Render.</p>
               </div>
 
               <ConfigCard title="Dockerfile (Otimizado para RAM)" icon={Terminal} config={dockerfile} language="dockerfile" />
