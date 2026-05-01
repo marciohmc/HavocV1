@@ -17,14 +17,24 @@ WORKDIR /app
 # Copia tudo primeiro para garantir a estrutura
 COPY . .
 
-# Entra na pasta do Teamserver
-WORKDIR /app/teamserver
+# --- RESILIÊNCIA PARA go.mod ---
+# Verifica se o go.mod está na raiz ou na pasta teamserver
+RUN if [ -f "./go.mod" ]; then \
+        go mod download; \
+    elif [ -f "./teamserver/go.mod" ]; then \
+        cd teamserver && go mod download; \
+    else \
+        echo "ERRO: go.mod nao encontrado em /app ou /app/teamserver" && exit 1; \
+    fi
 
-# Download de dependências
-RUN go mod download
-
-# Compilar o binário
-RUN go build -ldflags="-s -w" -o havoc-teamserver main.go
+# Compilar o binário (decidindo o caminho automaticamente)
+RUN if [ -f "./main.go" ]; then \
+        go build -ldflags="-s -w" -o /app/havoc-teamserver main.go; \
+    elif [ -f "./teamserver/main.go" ]; then \
+        cd teamserver && go build -ldflags="-s -w" -o /app/havoc-teamserver main.go; \
+    else \
+        echo "ERRO: main.go nao encontrado!" && exit 1; \
+    fi
 
 # Runtime Stage
 FROM alpine:latest
@@ -33,7 +43,7 @@ RUN apk add --no-cache python3 py3-pip bash openssl lua5.4
 WORKDIR /app
 
 # Copia apenas o necessário do builder
-COPY --from=builder /app/teamserver/havoc-teamserver .
+COPY --from=builder /app/havoc-teamserver .
 COPY --from=builder /app/data ./data
 COPY --from=builder /app/profiles ./profiles
 

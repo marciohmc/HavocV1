@@ -49,38 +49,37 @@ export default function App() {
 # Build Stage
 FROM golang:1.22-alpine AS builder
 
-# Instalar todas as dependências necessárias para o Havoc (CGO e Python)
+# Instalar dependências de compilação
 RUN apk add --no-cache \
-    git \
-    build-base \
-    python3-dev \
-    pkgconfig \
-    openssl-dev \
-    libffi-dev \
-    bash \
-    lua5.4-dev
+    git build-base python3-dev pkgconfig openssl-dev libffi-dev bash lua5.4-dev
 
 WORKDIR /app
-
-# Copia os arquivos do repo
 COPY . .
 
-# Preparar ambiente Go
-WORKDIR /app/teamserver
+# --- DETECTAR E BAIXAR MODULOS ---
+RUN if [ -f "./go.mod" ]; then \
+        go mod download; \
+    elif [ -f "./teamserver/go.mod" ]; then \
+        cd teamserver && go mod download; \
+    else \
+        echo "ERRO: go.mod nao encontrado!" && exit 1; \
+    fi
 
-# Forçar o download de dependências (Pode falhar se faltar RAM no build)
-# Otimização: Se falhar aqui, tente remover o "-x" para logs menores
-RUN go mod download -x
-
-# Compilar o Teamserver
-RUN go build -ldflags="-s -w" -o havoc-teamserver main.go
+# --- COMPILAR BINARIO ---
+RUN if [ -f "./main.go" ]; then \
+        go build -ldflags="-s -w" -o /app/havoc-teamserver main.go; \
+    elif [ -f "./teamserver/main.go" ]; then \
+        cd teamserver && go build -ldflags="-s -w" -o /app/havoc-teamserver main.go; \
+    else \
+        echo "ERRO: main.go nao encontrado!" && exit 1; \
+    fi
 
 # Runtime Stage
 FROM alpine:latest
 RUN apk add --no-cache python3 py3-pip bash openssl lua5.4
 
 WORKDIR /app
-COPY --from=builder /app/teamserver/havoc-teamserver .
+COPY --from=builder /app/havoc-teamserver .
 COPY --from=builder /app/data ./data
 COPY --from=builder /app/profiles ./profiles
 
