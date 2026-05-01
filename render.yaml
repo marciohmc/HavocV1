@@ -1,0 +1,31 @@
+/**
+ * Render Blueprint para HavocV1 Framework
+ * Otimizado para o plano Free (512MB RAM)
+ */
+services:
+  - type: web
+    name: havoc-v1-teamserver
+    env: docker
+    plan: free
+    region: ohio
+    dockerContext: .
+    dockerFilePath: ./Dockerfile
+    healthCheckPath: /
+    envVars:
+      - key: HAVOC_TEAMSERVER_PASSWORD
+        generateValue: true
+      - key: GOMEMLIMIT
+        value: 450MiB
+      - key: GOGC
+        value: 40
+      - key: MALLOC_ARENA_MAX
+        value: 1
+    disk:
+      name: havoc-v1-data
+      mountPath: /app/data
+      sizeGB: 1
+
+databases:
+  - name: havoc-v1-db
+    plan: free
+    region: ohio

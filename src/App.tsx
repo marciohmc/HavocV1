@@ -241,21 +241,30 @@ Teamserver {
 
               <div className="bg-indigo-900 text-white p-8 rounded-2xl shadow-xl overflow-hidden relative">
                 <div className="relative z-10">
-                  <h3 className="text-xl font-bold mb-4">Estratégia Recomendada</h3>
+                  <h3 className="text-xl font-bold mb-4">Como Sincronizar com seu GitHub</h3>
+                  <p className="text-indigo-200 mb-6 text-sm">O Render não consegue ler os arquivos que estão aqui no AI Studio. Você precisa colocá-los no seu repositório <strong>HavocV1</strong>.</p>
                   <ul className="space-y-4">
                     <li className="flex gap-3">
                       <div className="w-6 h-6 bg-indigo-700 rounded-full flex items-center justify-center text-xs font-bold shrink-0">1</div>
-                      <p className="text-indigo-100">Use instâncias separadas para o Teamserver e o Banco de Dados.</p>
+                      <p className="text-indigo-100">Vá no seu GitHub: <a href={forkUrl} target="_blank" className="underline font-bold">marciohmc/HavocV1</a></p>
                     </li>
                     <li className="flex gap-3">
                       <div className="w-6 h-6 bg-indigo-700 rounded-full flex items-center justify-center text-xs font-bold shrink-0">2</div>
-                      <p className="text-indigo-100">Mantenha os Artifacts de compilação (payloads) sob demanda para evitar bloating.</p>
+                      <p className="text-indigo-100">Clique em <strong>"Add file"</strong> &gt; <strong>"Create new file"</strong>.</p>
                     </li>
                     <li className="flex gap-3">
                       <div className="w-6 h-6 bg-indigo-700 rounded-full flex items-center justify-center text-xs font-bold shrink-0">3</div>
-                      <p className="text-indigo-100">Se possível, use o plano "Starter" ($7) no Render para ter 512MB estáveis, já que o plano Free pode sofrer "sleep" que corrompe sessões persistentes.</p>
+                      <p className="text-indigo-100">Nomeie como <code>Dockerfile</code> e cole o código da primeira aba daqui.</p>
+                    </li>
+                    <li className="flex gap-3">
+                      <div className="w-6 h-6 bg-indigo-700 rounded-full flex items-center justify-center text-xs font-bold shrink-0">4</div>
+                      <p className="text-indigo-100">Repita o processo para o arquivo <code>render.yaml</code>.</p>
                     </li>
                   </ul>
+                  <div className="mt-8 p-4 bg-indigo-800/50 rounded-xl border border-indigo-700">
+                    <p className="text-xs font-medium text-indigo-300 uppercase mb-2">Dica de Ouro</p>
+                    <p className="text-sm">Após salvar os arquivos no GitHub, o Render detectará a mudança automaticamente e tentará o deploy de novo (Auto-Deploy).</p>
+                  </div>
                 </div>
                 <div className="absolute top-0 right-0 p-8 opacity-10">
                   <Shield size={160} />
