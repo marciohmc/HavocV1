@@ -1,20 +1,79 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+  <img width="125px" src="assets/Havoc.png" />
+  <h1>Havoc</h1>
+  <br/>
+
+  <p><i>Havoc is a modern and malleable post-exploitation command and control framework, created by <a href="https://twitter.com/C5pider">@C5pider</a>.</i></p>
+  <br />
+
+  <img src="assets/Screenshots/FullSessionGraph.jpeg" width="90%" /><br />
+  <img src="assets/Screenshots/MultiUserAgentControl.png" width="90%" /><br />
+  
 </div>
 
-# Run and deploy your AI Studio app
+### Quick Start
 
-This contains everything you need to run your app locally.
+> Please see the [Wiki](https://github.com/HavocFramework/Havoc/wiki) for complete documentation.
 
-View your app in AI Studio: https://ai.studio/apps/d9105012-0bbc-4cfb-8c64-8c541c4d4684
+Havoc works well on Debian 10/11, Ubuntu 20.04/22.04 and Kali Linux. It's recommended to use the latest versions possible to avoid issues. You'll need a modern version of Qt and Python 3.10.x to avoid build issues.
 
-## Run Locally
+See the [Installation](https://havocframework.com/docs/installation) docs for instructions. If you run into issues, check the [Known Issues](https://github.com/HavocFramework/Havoc/wiki#known-issues) page as well as the open/closed [Issues](https://github.com/HavocFramework/Havoc/issues) list.
 
-**Prerequisites:**  Node.js
+---
+
+### Features
+
+#### Client
+
+> Cross-platform UI written in C++ and Qt
+
+- Modern, dark theme based on [Dracula](https://draculatheme.com/)
 
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+#### Teamserver
+
+> Written in Golang
+
+- Multiplayer
+- Payload generation (exe/shellcode/dll)
+- HTTP/HTTPS listeners
+- Customizable C2 profiles 
+- External C2
+
+#### Demon
+
+> Havoc's flagship agent written in C and ASM
+
+- Sleep Obfuscation via [Ekko](https://github.com/Cracked5pider/Ekko), Ziliean or [FOLIAGE](https://github.com/SecIdiot/FOLIAGE)
+- x64 return address spoofing
+- Indirect Syscalls for Nt* APIs
+- SMB support
+- Token vault
+- Variety of built-in post-exploitation commands
+- Patching Amsi/Etw via Hardware breakpoints
+- Proxy library loading
+- Stack duplication during sleep. 
+
+<div align="center">
+  <img src="assets/Screenshots/SessionConsoleHelp.png" width="90%" /><br />
+</div>
+
+#### Extensibility
+
+- [External C2](https://github.com/HavocFramework/Havoc/wiki#external-c2)
+- Custom Agent Support
+  - [Talon](https://github.com/HavocFramework/Talon)
+- [Python API](https://github.com/HavocFramework/havoc-py)
+- [Modules](https://github.com/HavocFramework/Modules)
+
+---
+
+### Community
+
+You can join the official [Havoc Discord](https://discord.gg/z3PF3NRDE5) to chat with the community! 
+
+### Note
+
+Please do not open any issues regarding detection. 
+
+The Havoc Framework hasn't been developed to be evasive. Rather it has been designed to be as malleable & modular as possible. Giving the operator the capability to add custom features or modules that evades their targets detection system. 
