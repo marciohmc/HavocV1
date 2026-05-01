@@ -270,26 +270,69 @@ Teamserver {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="prose prose-indigo max-w-none bg-white p-8 rounded-2xl border border-gray-100 shadow-sm"
+              className="space-y-8"
             >
-              <h2 className="text-gray-900">Como implantar no Render</h2>
-              <ol className="text-gray-600 space-y-4">
-                <li>
-                  <strong>Fork do Havoc:</strong> Faça um fork do repositório original para o seu GitHub.
-                </li>
-                <li>
-                  <strong>Adicionar Arquivos:</strong> Crie os arquivos <code>Dockerfile</code> e <code>render.yaml</code> na raiz do seu repositório com os conteúdos gerados nesta ferramenta.
-                </li>
-                <li>
-                  <strong>Conectar ao Render:</strong> No painel do Render, vá em "New +" e escolha "Blueprint". Conecte seu repositório GitHub.
-                </li>
-                <li>
-                  <strong>Configurar Variáveis:</strong> O Render lerá o <code>render.yaml</code> e criará o Database e o Web Service automaticamente.
-                </li>
-                <li>
-                  <strong>Acesso:</strong> Após a compilação (que pode demorar cerca de 10-15 minutos pela primeira vez devido ao Go build), seu Teamserver estará disponível na URL do Render.
-                </li>
-              </ol>
+              <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm prose prose-indigo max-w-none">
+                <h2 className="text-gray-900">Como implantar no Render</h2>
+                <ol className="text-gray-600 space-y-4">
+                  <li>
+                    <strong>Fork do Havoc:</strong> Você já criou: <code className="text-indigo-600">{forkUrl}</code>
+                  </li>
+                  <li>
+                    <strong>Adicionar Arquivos:</strong> Crie um arquivo chamado <code>Dockerfile</code> na raiz do repositório com o conteúdo da aba "Configs".
+                  </li>
+                  <li>
+                    <strong>Conectar ao Render:</strong> No painel do Render, vá em "New +" e escolha "Web Service". Conecte seu repositório GitHub.
+                  </li>
+                </ol>
+              </div>
+
+              <div className="bg-white p-8 rounded-2xl border-2 border-indigo-100 shadow-md">
+                <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                  <Check size={20} className="text-green-500" /> 
+                  Checklist do Formulário Render
+                </h3>
+                
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
+                      <p className="text-xs font-bold text-gray-400 uppercase mb-1">Runtime / Language</p>
+                      <p className="text-gray-900 font-bold">Docker</p>
+                      <p className="text-xs text-amber-600 mt-1">⚠️ Não use Node/Go diretamente</p>
+                    </div>
+                    <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
+                      <p className="text-xs font-bold text-gray-400 uppercase mb-1">Region</p>
+                      <p className="text-gray-900 font-bold">Ohio (US East)</p>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+                    <p className="text-sm font-bold text-indigo-900 mb-3">Variáveis de Ambiente (CRÍTICO p/ 512MB)</p>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm font-mono bg-white p-2 rounded border border-indigo-100">
+                        <span className="text-gray-500">GOMEMLIMIT</span>
+                        <span className="text-indigo-600 font-bold">450MiB</span>
+                      </div>
+                      <div className="flex justify-between text-sm font-mono bg-white p-2 rounded border border-indigo-100">
+                        <span className="text-gray-500">GOGC</span>
+                        <span className="text-indigo-600 font-bold">40</span>
+                      </div>
+                      <div className="flex justify-between text-sm font-mono bg-white p-2 rounded border border-indigo-100">
+                        <span className="text-gray-500">MALLOC_ARENA_MAX</span>
+                        <span className="text-indigo-600 font-bold">1</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-amber-50 rounded-xl border border-amber-100">
+                    <p className="text-sm font-bold text-amber-900 mb-1">Nota sobre Discos (Persistent Storage)</p>
+                    <p className="text-xs text-amber-800 leading-relaxed">
+                      O plano <strong>Free</strong> não suporta "Disks". Seus arquivos serão deletados ao reiniciar. 
+                      Para salvar logs e payloads permanentemente, use o plano <strong>Starter ($7)</strong>.
+                    </p>
+                  </div>
+                </div>
+              </div>
 
               <div className="mt-10 p-6 bg-gray-50 rounded-xl border border-dashed border-gray-300">
                 <p className="text-sm font-medium mb-2 uppercase tracking-wider text-gray-500">Links Úteis</p>
@@ -297,8 +340,8 @@ Teamserver {
                   <a href="https://havocframework.com/docs" target="_blank" className="flex items-center gap-1.5 text-indigo-600 hover:underline">
                     Documentação Oficial <ExternalLink size={14} />
                   </a>
-                  <a href="https://render.com/docs/blueprints" target="_blank" className="flex items-center gap-1.5 text-indigo-600 hover:underline">
-                    Render Blueprints <ExternalLink size={14} />
+                  <a href="https://render.com/docs/docker" target="_blank" className="flex items-center gap-1.5 text-indigo-600 hover:underline">
+                    Deploying Docker on Render <ExternalLink size={14} />
                   </a>
                 </div>
               </div>
