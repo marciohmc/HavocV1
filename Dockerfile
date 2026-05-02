@@ -41,7 +41,19 @@ RUN apk add --no-cache \
     lua5.4 \
     libstdc++ \
     libgcc \
-    ca-certificates
+    ca-certificates \
+    python3 \
+    bash \
+    openssl \
+    lua5.4 \
+    libstdc++ \
+    libgcc \
+    ca-certificates \
+    sqlite-libs \
+    gcompat \
+    mingw-w64-gcc \
+    nasm
+
 
 WORKDIR /app
 
