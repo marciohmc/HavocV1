@@ -38,6 +38,7 @@ RUN apk add --no-cache \
     sqlite-libs \
     gcompat \
     mingw-w64-gcc \
+    mingw-w64 \
     nasm
 
 WORKDIR /app
