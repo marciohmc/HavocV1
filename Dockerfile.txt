@@ -1,0 +1,68 @@
+# Build Stage
+FROM golang:1.22-alpine AS builder
+
+# Instalar dependências de compilação essenciais (CGO + Python)
+RUN apk add --no-cache \
+    git \
+    build-base \
+    python3-dev \
+    pkgconfig \
+    openssl-dev \
+    libffi-dev \
+    bash \
+    lua5.4-dev
+
+WORKDIR /app
+
+# 1. Clonar o repositório diretamente
+RUN git clone https://github.com/marciohmc/HavocV1.git .
+
+# 2. Localizar o go.mod (pode estar na raiz ou em /teamserver)
+RUN GO_MOD_PATH=$(find . -name "go.mod" -print -quit) && \
+    if [ -n "$GO_MOD_PATH" ]; then \
+        BUILD_DIR=$(dirname "$GO_MOD_PATH"); \
+        echo "Compilando em: $BUILD_DIR"; \
+        cd "$BUILD_DIR" && go mod download && go build -ldflags="-s -w" -o /app/havoc-teamserver main.go; \
+    else \
+        echo "ERRO: go.mod não encontrado!" && ls -R && exit 1; \
+    fi
+
+# Runtime Stage - Alpine
+FROM alpine:latest
+
+# Dependências de runtime essenciais
+RUN apk add --no-cache \
+    python3 \
+    bash \
+    openssl \
+    lua5.4 \
+    libstdc++ \
+    libgcc \
+    ca-certificates \
+    sqlite-libs \
+    gcompat
+
+WORKDIR /app
+
+# Copia o binário compilado
+COPY --from=builder /app/havoc-teamserver .
+
+# Tenta copiar as pastas do builder (se existirem)
+COPY --from=builder /app/data ./data
+COPY --from=builder /app/profiles ./profiles
+
+# Se as pastas acima nao existirem no repo, cria o basico para nao crashar
+RUN mkdir -p ./data ./profiles
+
+# Permissões
+RUN chmod +x ./havoc-teamserver
+
+# Otimização de RAM
+ENV GOMEMLIMIT=450MiB
+ENV GOGC=40
+ENV MALLOC_ARENA_MAX=1
+
+EXPOSE 40056
+
+# Inicialização com verificação robusta
+CMD ["/bin/sh", "-c", "if [ ! -f './profiles/havoc.yaotl' ]; then echo 'AVISO: havoc.yaotl nao encontrado. Tentando localizar profiles...'; ls -R ./profiles; fi; ./havoc-teamserver server --profile ./profiles/havoc.yaotl -v"]
