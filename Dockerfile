@@ -38,7 +38,6 @@ RUN apk add --no-cache \
     ca-certificates \
     sqlite-libs \
     gcompat \
-    mingw-w64-gcc \
     mingw-w64 \
     nasm
 
