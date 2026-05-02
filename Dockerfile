@@ -11,6 +11,7 @@ RUN apk add --no-cache \
     libffi-dev \
     bash \
     lua5.4-dev
+export PATH=$PATH:/usr/bin/  # Default location for apt/brew installs
 
 WORKDIR /app
 
